@@ -16,7 +16,7 @@ key_value_service_1(char *host)
 	enum clnt_stat retval_2;
 	int result_2;
 	int d_set_value_1_arg1;
-	char_array d_set_value_1_arg2;
+	char* d_set_value_1_arg2;
 	int d_set_value_1_arg3;
 	double_array d_set_value_1_arg4;
 	enum clnt_stat retval_3;
@@ -25,7 +25,7 @@ key_value_service_1(char *host)
 	enum clnt_stat retval_4;
 	int result_4;
 	int d_modify_value_1_arg1;
-	char_array d_modify_value_1_arg2;
+	char* d_modify_value_1_arg2;
 	int d_modify_value_1_arg3;
 	double_array d_modify_value_1_arg4;
 	enum clnt_stat retval_5;
@@ -45,25 +45,61 @@ key_value_service_1(char *host)
 
 	retval_1 = d_init_1(&result_1, clnt);
 	printf("eoeoeoe\n");
+	fflush(stdout);
 	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-
+	printf("1\n");
+	fflush(stdout);
 	d_set_value_1_arg1 = 6;
-	strcpy(d_set_value_1_arg2, "hola");
+	printf("2\n");
+	fflush(stdout);
+	d_set_value_1_arg2 = "hola";
+	printf("3\n");
+	fflush(stdout);
 	d_set_value_1_arg3 = 2;
+	printf("4\n");
+	fflush(stdout);
 	d_set_value_1_arg4.double_array_len=2;
-	d_set_value_1_arg4.double_array_val[0] = 3.10;
-	d_set_value_1_arg4.double_array_val[1] = 0.10;
+	printf("5\n");
+	fflush(stdout);
+	for (int i = 0; i < d_set_value_1_arg3; i++){
+		d_set_value_1_arg4.double_array_val[i] = 1.4*i;
+	}
+	// d_set_value_1_arg4.double_array_val[0] = 3.10;
+	// printf("6\n");
+	// fflush(stdout);
+	// d_set_value_1_arg4.double_array_val[1] = 0.10;
+	printf("7\n");
+	fflush(stdout);
 
 	retval_2 = d_set_value_1(d_set_value_1_arg1, d_set_value_1_arg2, d_set_value_1_arg3, d_set_value_1_arg4, &result_2, clnt);
 	if (retval_2 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
+	
 	// retval_3 = d_get_value_1(d_get_value_1_arg1, &result_3, clnt);
 	// if (retval_3 != RPC_SUCCESS) {
 	// 	clnt_perror (clnt, "call failed");
 	// }
+
+	printf("1\n");
+	fflush(stdout);
+	d_modify_value_1_arg1 = 6;
+	printf("2\n");
+	fflush(stdout);
+	d_modify_value_1_arg2 = "valor cambiado";
+	printf("3\n");
+	fflush(stdout);
+	d_modify_value_1_arg3 = 1;
+	printf("4\n");
+	fflush(stdout);
+	d_modify_value_1_arg4.double_array_len = 2;
+	printf("5\n");
+	fflush(stdout);
+	d_modify_value_1_arg4.double_array_val[0] = 6.9;
+	printf("6\n");
+	fflush(stdout);
 	// retval_4 = d_modify_value_1(d_modify_value_1_arg1, d_modify_value_1_arg2, d_modify_value_1_arg3, d_modify_value_1_arg4, &result_4, clnt);
 	// if (retval_4 != RPC_SUCCESS) {
 	// 	clnt_perror (clnt, "call failed");
@@ -85,12 +121,12 @@ key_value_service_1(char *host)
 int
 main (int argc, char *argv[])
 {
-	char *host;
-	printf("eoeoeoe\n");
-	if (argc < 2) {
-		printf ("usage: %s server_host\n", argv[0]);
-		exit (1);
-	}
+	 char *host;
+	// printf("eoeoeoe\n");
+	// if (argc < 2) {
+	// 	printf ("usage: %s server_host\n", argv[0]);
+	// 	exit (1);
+	//}
 	host = argv[1];
 	key_value_service_1 (host);
 exit (0);

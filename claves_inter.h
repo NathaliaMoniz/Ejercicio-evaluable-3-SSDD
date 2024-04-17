@@ -14,19 +14,15 @@
 extern "C" {
 #endif
 
-#define MAX_STRING_LEN 256
-#define MAX_DOUBLE_LEN 32
 
 typedef struct {
 	u_int double_array_len;
 	double *double_array_val;
 } double_array;
 
-typedef char *char_array;
-
 struct KeyValue {
 	int key;
-	char_array value1;
+	char *value1;
 	int N_value2;
 	double_array V_value2;
 };
@@ -34,7 +30,7 @@ typedef struct KeyValue KeyValue;
 
 struct d_set_value_1_argument {
 	int arg1;
-	char_array arg2;
+	char *arg2;
 	int arg3;
 	double_array arg4;
 };
@@ -42,7 +38,7 @@ typedef struct d_set_value_1_argument d_set_value_1_argument;
 
 struct d_modify_value_1_argument {
 	int arg1;
-	char_array arg2;
+	char *arg2;
 	int arg3;
 	double_array arg4;
 };
@@ -56,14 +52,14 @@ typedef struct d_modify_value_1_argument d_modify_value_1_argument;
 extern  enum clnt_stat d_init_1(int *, CLIENT *);
 extern  bool_t d_init_1_svc(int *, struct svc_req *);
 #define d_set_value 2
-extern  enum clnt_stat d_set_value_1(int , char_array , int , double_array , int *, CLIENT *);
-extern  bool_t d_set_value_1_svc(int , char_array , int , double_array , int *, struct svc_req *);
+extern  enum clnt_stat d_set_value_1(int , char *, int , double_array , int *, CLIENT *);
+extern  bool_t d_set_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
 #define d_get_value 3
-extern  enum clnt_stat d_get_value_1(int , int *, CLIENT *);
-extern  bool_t d_get_value_1_svc(int , int *, struct svc_req *);
+extern  enum clnt_stat d_get_value_1(int , KeyValue *, CLIENT *);
+extern  bool_t d_get_value_1_svc(int , KeyValue *, struct svc_req *);
 #define d_modify_value 4
-extern  enum clnt_stat d_modify_value_1(int , char_array , int , double_array , int *, CLIENT *);
-extern  bool_t d_modify_value_1_svc(int , char_array , int , double_array , int *, struct svc_req *);
+extern  enum clnt_stat d_modify_value_1(int , char *, int , double_array , int *, CLIENT *);
+extern  bool_t d_modify_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
 #define d_delete_key 5
 extern  enum clnt_stat d_delete_key_1(int , int *, CLIENT *);
 extern  bool_t d_delete_key_1_svc(int , int *, struct svc_req *);
@@ -98,14 +94,12 @@ extern int key_value_service_1_freeresult ();
 
 #if defined(__STDC__) || defined(__cplusplus)
 extern  bool_t xdr_double_array (XDR *, double_array*);
-extern  bool_t xdr_char_array (XDR *, char_array*);
 extern  bool_t xdr_KeyValue (XDR *, KeyValue*);
 extern  bool_t xdr_d_set_value_1_argument (XDR *, d_set_value_1_argument*);
 extern  bool_t xdr_d_modify_value_1_argument (XDR *, d_modify_value_1_argument*);
 
 #else /* K&R C */
 extern bool_t xdr_double_array ();
-extern bool_t xdr_char_array ();
 extern bool_t xdr_KeyValue ();
 extern bool_t xdr_d_set_value_1_argument ();
 extern bool_t xdr_d_modify_value_1_argument ();

@@ -19,7 +19,7 @@ d_init_1(int *clnt_res, CLIENT *clnt)
 }
 
 enum clnt_stat 
-d_set_value_1(int arg1, char_array arg2, int arg3, double_array arg4, int *clnt_res,  CLIENT *clnt)
+d_set_value_1(int arg1, char *arg2, int arg3, double_array arg4, int *clnt_res,  CLIENT *clnt)
 {
 	d_set_value_1_argument arg;
 	arg.arg1 = arg1;
@@ -32,16 +32,16 @@ d_set_value_1(int arg1, char_array arg2, int arg3, double_array arg4, int *clnt_
 }
 
 enum clnt_stat 
-d_get_value_1(int arg1, int *clnt_res,  CLIENT *clnt)
+d_get_value_1(int arg1, KeyValue *clnt_res,  CLIENT *clnt)
 {
 	return (clnt_call(clnt, d_get_value,
 		(xdrproc_t) xdr_int, (caddr_t) &arg1,
-		(xdrproc_t) xdr_int, (caddr_t) clnt_res,
+		(xdrproc_t) xdr_KeyValue, (caddr_t) clnt_res,
 		TIMEOUT));
 }
 
 enum clnt_stat 
-d_modify_value_1(int arg1, char_array arg2, int arg3, double_array arg4, int *clnt_res,  CLIENT *clnt)
+d_modify_value_1(int arg1, char *arg2, int arg3, double_array arg4, int *clnt_res,  CLIENT *clnt)
 {
 	d_modify_value_1_argument arg;
 	arg.arg1 = arg1;
