@@ -52,7 +52,8 @@ int init(){
         clnt_perror(clnt, "call failed:");
         return -1;
     }
-    printf("Resultado %d\n", res);
+    
+    printf("Resultado %d\n", retval);
 
     /* Destruir el manejador */
     clnt_destroy( clnt );
@@ -84,4 +85,20 @@ int exist(int key){
     
     
     return 0;
+}
+
+
+int
+main (int argc, char *argv[])
+{
+	// char *host;
+
+	// if (argc < 2) {
+	// 	printf ("usage: %s server_host\n", argv[0]);
+	// 	exit (1);
+	// }
+	// host = argv[1];
+	init();
+	
+exit (0);
 }

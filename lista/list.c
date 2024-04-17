@@ -10,6 +10,7 @@ pthread_mutex_t mutex_lista1, mutex_lista2;
 int iniciar(List *l) {
 	*l = NULL;
 	return 0;
+	
 }	
 
 int set(List *l, int key, char *value1, int N_value2, double *V_value2){
