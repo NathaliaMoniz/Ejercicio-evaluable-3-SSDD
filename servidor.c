@@ -25,7 +25,7 @@ bool_t
 d_set_value_1_svc(struct KeyValue arg1, int *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
-
+	
 	/*
 	 * insert server code here
 	 */
