@@ -22,9 +22,9 @@ typedef struct {
 
 struct KeyValue {
 	int key;
-	char *value1;
+	char value1[256];
 	int N_value2;
-	double_array V_value2;
+	double V_value2[32];
 };
 typedef struct KeyValue KeyValue;
 
@@ -55,8 +55,8 @@ extern  bool_t d_init_1_svc(int *, struct svc_req *);
 extern  enum clnt_stat d_set_value_1(int , char *, int , double_array , int *, CLIENT *);
 extern  bool_t d_set_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
 #define d_get_value 3
-extern  enum clnt_stat d_get_value_1(int , KeyValue *, CLIENT *);
-extern  bool_t d_get_value_1_svc(int , KeyValue *, struct svc_req *);
+extern  enum clnt_stat d_get_value_1(int , struct KeyValue *, CLIENT *);
+extern  bool_t d_get_value_1_svc(int , struct KeyValue *, struct svc_req *);
 #define d_modify_value 4
 extern  enum clnt_stat d_modify_value_1(int , char *, int , double_array , int *, CLIENT *);
 extern  bool_t d_modify_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);

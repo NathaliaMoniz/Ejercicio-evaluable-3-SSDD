@@ -1,4 +1,3 @@
-#include <mqueue.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -56,6 +55,7 @@ int main(int argc, char *argv[]){
         printf("envio peticion get_value cliente\n");
         resultado = get_value(key, vacio1, &N_vacio2, V_vacio2);
         // Imprime el valor obtenido en caso de funcionar
+        
         if (resultado == 0){
             printf("value1: %s\n", vacio1);
             printf("N_value2: %d\n", N_vacio2);
@@ -64,6 +64,7 @@ int main(int argc, char *argv[]){
             }
         }
     }
+    
     // Función modifi_value
     else if (op == 3){
         printf("envio peticion modify_value cliente\n");

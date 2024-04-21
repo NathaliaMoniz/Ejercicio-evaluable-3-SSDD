@@ -21,13 +21,16 @@ xdr_KeyValue (XDR *xdrs, KeyValue *objp)
 {
 	register int32_t *buf;
 
+	int i;
 	 if (!xdr_int (xdrs, &objp->key))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->value1, ~0))
+	 if (!xdr_vector (xdrs, (char *)objp->value1, 256,
+		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->N_value2))
 		 return FALSE;
-	 if (!xdr_double_array (xdrs, &objp->V_value2))
+	 if (!xdr_vector (xdrs, (char *)objp->V_value2, 32,
+		sizeof (double), (xdrproc_t) xdr_double))
 		 return FALSE;
 	return TRUE;
 }

@@ -74,8 +74,9 @@ int set(List *l, int key, char *value1, int N_value2, double *V_value2){
 	return 0;
 }	
 
-int get(List l, int key, char *value1, int *N_value2, double *V_value2){
+struct respuesta get(List l, int key){
 	
+	struct respuesta respuesta; 
 	pthread_mutex_lock(&mutex_lista1);
 	List aux;
 	aux = l;
@@ -84,12 +85,17 @@ int get(List l, int key, char *value1, int *N_value2, double *V_value2){
 	while (aux!=NULL) {
 		if (aux->key == key) {
 			
-			strcpy(value1, aux->value1);
-			*N_value2 = aux->N_value2;
-			memcpy(V_value2, aux->V_value2, *N_value2*sizeof(double));
+			strcpy(respuesta.value1, aux->value1);
+			respuesta.N_value2 = aux->N_value2;
+			//memcpy(respuesta.V_value2, aux->V_value2, respuesta.N_value2*sizeof(double));
+			for(int i = 0; i < aux->N_value2; i++){
+				respuesta.V_value2[i] = aux->V_value2[i];
+			}
+			
 			printf("Valor a obtener encontrado\n");
 			pthread_mutex_unlock(&mutex_lista1);
-			return 0;		// Valor encontrado
+			respuesta.stado = 0;
+			return respuesta;		// Valor encontrado
 		}
 		else{
 			aux = aux->next;
@@ -97,7 +103,8 @@ int get(List l, int key, char *value1, int *N_value2, double *V_value2){
 	}
 	printf("Valor a obtener no encontrado\n");
 	pthread_mutex_unlock(&mutex_lista1);
-	return -1;  // Valor no encontrado
+	respuesta.stado = -1;
+	return respuesta;  // Valor no encontrado
 }	
 
 int printList(List l){

@@ -11,96 +11,105 @@
 
 List my_list;
 
-bool_t
+int iniciado = 0;
+
+int
 d_init_1_svc(int *result, struct svc_req *rqstp)
 {
-	bool_t retval;
-    retval = TRUE;
+	bool_t retval = TRUE;
 	*result = iniciar(&my_list);
+	iniciado = 1;
 	
-	return retval;
-}
-
-bool_t
-d_set_value_1_svc(int arg1, char* arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
-{	
-	bool_t retval;
-	retval = TRUE;
-	
-	double V_value2[arg3];
-	for(int i = 0; i < arg3; i++){
-		V_value2[i] = arg4.double_array_val[i];
-	}
-	
-	
-	*result = set(&my_list, arg1, arg2, arg3, V_value2);
-	printList(my_list);
-	return retval;
-}
-
-bool_t
-d_get_value_1_svc(int arg1, int *result,  struct svc_req *rqstp)
-{
-	bool_t retval;
-
-	/*
-	 * insert server code here
-	 */
-
-	return retval;
-}
-
-bool_t
-d_modify_value_1_svc(int arg1, char* arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
-{
-	bool_t retval;
-
-	retval = TRUE;
-	
-	double V_value2[arg3];
-	for(int i = 0; i < arg3; i++){
-		V_value2[i] = arg4.double_array_val[i];
-	}
-	
-	
-	*result = modify(&my_list, arg1, arg2, arg3, V_value2);
-	printList(my_list);
-
-	return retval;
-}
-
-bool_t
-d_delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
-{
-	bool_t retval;
-
-	/*
-	 * insert server code here
-	 */
-
-	return retval;
-}
-
-bool_t
-d_exist_1_svc(int arg1, int *result,  struct svc_req *rqstp)
-{
-	bool_t retval;
-
-	/*
-	 * insert server code here
-	 */
-
 	return retval;
 }
 
 int
+d_set_value_1_svc(int arg1, char* arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
+{	
+	bool_t retval = TRUE;
+	if (iniciado == 1){
+		double V_value2[arg3];
+		for(int i = 0; i < arg3; i++){
+			V_value2[i] = arg4.double_array_val[i];
+		}
+		
+		
+		*result = set(&my_list, arg1, arg2, arg3, V_value2);
+		printList(my_list);
+	}
+	return retval;
+}
+
+int
+d_get_value_1_svc(int arg1, KeyValue *result,  struct svc_req *rqstp)
+{
+	bool_t retval = TRUE;
+	if (iniciado == 1){
+		struct respuesta res;
+		
+		// Llamar a la función get para obtener los valores
+		res = get(my_list, arg1);
+		//Comprobar si se encontró el valor en la lista
+		if (res.stado == 0) {
+			//llenar la estructura KeyValue con los valores obtenidos
+			result->key = arg1;
+			strcpy(result->value1,res.value1); // Copiar value1 a result->value1
+			result->N_value2 = res.N_value2;
+			
+			for(int i = 0; i < result->N_value2; i++){
+				result->V_value2[i] = res.V_value2[i];
+				
+			}
+		}
+	}
+    return retval; // Devolver el valor de retorno
+}
+
+int
+d_modify_value_1_svc(int arg1, char* arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
+{
+	bool_t retval = TRUE;
+	if (iniciado == 1){
+		
+		double V_value2[arg3];
+		for(int i = 0; i < arg3; i++){
+			V_value2[i] = arg4.double_array_val[i];
+		}
+		
+		
+		*result = modify(&my_list, arg1, arg2, arg3, V_value2);
+		printList(my_list);
+	}
+	return retval;
+}
+
+int
+d_delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
+{
+	bool_t retval = TRUE;
+	if (iniciado == 1){
+		*result = delete(&my_list, arg1);
+		printList(my_list);
+	}
+	return retval;
+}
+
+int
+d_exist_1_svc(int arg1, int *result,  struct svc_req *rqstp)
+{
+	bool_t retval = TRUE;
+	if (iniciado == 1){
+		*result = inlist(&my_list, arg1);
+	}
+	return retval;
+}
+
+
+int
 key_value_service_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
 {
-	xdr_free (xdr_result, result);
-
-	/*
-	 * Insert additional freeing code here, if needed
-	 */
+	xdr_free(xdr_result, result);
 
 	return 1;
 }
+

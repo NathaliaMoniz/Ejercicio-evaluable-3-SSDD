@@ -5,125 +5,182 @@
  */
 
 #include "claves_inter.h"
+#include "claves.h"
 
+char *ip(){
+    // Obtener la variable de entorno IP_TUPLAS
+    char *ip_tuplas; 
+ 
+    ip_tuplas = getenv("IP_TUPLAS"); 
+    if (ip_tuplas == NULL){ 
+        printf("La variable de entorno IP_TUPLAS no está definida.\n"); 
+        return NULL; 
+    } 
+    else 
+        printf("Variable IP_TUPLAS definida con valor %s\n", ip_tuplas); 
 
-void
-key_value_service_1(char *host)
-{
+    return ip_tuplas;
+}
+
+int init(){
 	CLIENT *clnt;
 	enum clnt_stat retval_1;
 	int result_1;
-	enum clnt_stat retval_2;
-	int result_2;
-	int d_set_value_1_arg1;
-	char* d_set_value_1_arg2;
-	int d_set_value_1_arg3;
-	double_array d_set_value_1_arg4;
-	enum clnt_stat retval_3;
-	int result_3;
-	int d_get_value_1_arg1;
-	enum clnt_stat retval_4;
-	int result_4;
-	int d_modify_value_1_arg1;
-	char* d_modify_value_1_arg2;
-	int d_modify_value_1_arg3;
-	double_array d_modify_value_1_arg4;
-	enum clnt_stat retval_5;
-	int result_5;
-	int d_delete_key_1_arg1;
-	enum clnt_stat retval_6;
-	int result_6;
-	int d_exist_1_arg1;
+	char *host;
+	host = ip();
 
-#ifndef	DEBUG
+
 	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
 	if (clnt == NULL) {
 		clnt_pcreateerror (host);
 		exit (1);
 	}
-#endif	/* DEBUG */
-
+	
 	retval_1 = d_init_1(&result_1, clnt);
-	printf("eoeoeoe\n");
+	printf("iniciado\n");
 	fflush(stdout);
 	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	printf("1\n");
-	fflush(stdout);
-	d_set_value_1_arg1 = 6;
-	printf("2\n");
-	fflush(stdout);
-	d_set_value_1_arg2 = "hola";
-	printf("3\n");
-	fflush(stdout);
-	d_set_value_1_arg3 = 2;
-	printf("4\n");
-	fflush(stdout);
-	d_set_value_1_arg4.double_array_len=2;
-	printf("5\n");
-	fflush(stdout);
-	d_set_value_1_arg4.double_array_val[0] = 3.10;
-	printf("6\n");
-	fflush(stdout);
-	d_set_value_1_arg4.double_array_val[1] = 0.10;
-	printf("7\n");
-	fflush(stdout);
+	return result_1;
+}
 
-	retval_2 = d_set_value_1(d_set_value_1_arg1, d_set_value_1_arg2, d_set_value_1_arg3, d_set_value_1_arg4, &result_2, clnt);
+int set_value(int key, char *value1, int N_value2, double *V_value2){
+
+	CLIENT *clnt;
+	enum clnt_stat retval_2;
+	int result_2;
+	char *host;
+	host = ip();
+
+
+	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+	
+	double_array double_V_value2;
+	double_V_value2.double_array_len = N_value2;
+	double_V_value2.double_array_val = malloc(double_V_value2.double_array_len * sizeof(double));
+	for (int i = 0; i < N_value2; i++){
+		double_V_value2.double_array_val[i] = V_value2[i];
+	}
+	
+	retval_2 = d_set_value_1(key, value1, N_value2, double_V_value2, &result_2, clnt);
+	printf("set realizado\n");
+	fflush(stdout);
 	if (retval_2 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	// retval_3 = d_get_value_1(d_get_value_1_arg1, &result_3, clnt);
-	// if (retval_3 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	// }
-
-	printf("1\n");
-	fflush(stdout);
-	d_modify_value_1_arg1 = 6;
-	printf("2\n");
-	fflush(stdout);
-	d_modify_value_1_arg2 = "valor cambiado";
-	printf("3\n");
-	fflush(stdout);
-	d_modify_value_1_arg3 = 1;
-	printf("4\n");
-	fflush(stdout);
-	d_modify_value_1_arg4.double_array_len = 2;
-	printf("5\n");
-	fflush(stdout);
-	// d_modify_value_1_arg4.double_array_val[0] = 6.9;
-	// printf("6\n");
-	// fflush(stdout);
-	// retval_4 = d_modify_value_1(d_modify_value_1_arg1, d_modify_value_1_arg2, d_modify_value_1_arg3, d_modify_value_1_arg4, &result_4, clnt);
-	// if (retval_4 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	// }
-	// retval_5 = d_delete_key_1(d_delete_key_1_arg1, &result_5, clnt);
-	// if (retval_5 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	// }
-	// retval_6 = d_exist_1(d_exist_1_arg1, &result_6, clnt);
-	// if (retval_6 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	//}
-#ifndef	DEBUG
-	clnt_destroy (clnt);
-#endif	 /* DEBUG */
+	return result_2;
 }
 
+int get_value(int key, char *value1, int *N_value2, double *V_value2){
 
-int
-main (int argc, char *argv[])
-{
-	 char *host;
-	// printf("eoeoeoe\n");
-	// if (argc < 2) {
-	// 	printf ("usage: %s server_host\n", argv[0]);
-	// 	exit (1);
-	//}
-	host = argv[1];
-	key_value_service_1 (host);
-exit (0);
+	CLIENT *clnt;
+	enum clnt_stat retval_3;
+	struct KeyValue result_3;
+	char *host;
+	host = ip();
+
+	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+
+	retval_3 = d_get_value_1(key, &result_3, clnt);
+	if (retval_3 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+	
+	key = result_3.key;
+	strcpy(value1, result_3.value1);
+
+	*N_value2 = result_3.N_value2;
+	for(int i = 0; i < result_3.N_value2; i++){
+		V_value2[i] = result_3.V_value2[i];
+	}
+	return 0;
+	
+}
+
+int modify_value(int key, char *value1, int N_value2, double *V_value2){
+
+	CLIENT *clnt;
+	enum clnt_stat retval_4;
+	int result_4;
+	char *host;
+	host = ip();
+
+
+	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+	
+	double_array double_V_value2;
+	double_V_value2.double_array_len = N_value2;
+	double_V_value2.double_array_val = malloc(double_V_value2.double_array_len * sizeof(double));
+	for (int i = 0; i < N_value2; i++){
+		double_V_value2.double_array_val[i] = V_value2[i];
+	}
+	
+	retval_4 = d_modify_value_1(key, value1, N_value2, double_V_value2, &result_4, clnt);
+	printf("modify realizado\n");
+	if (retval_4 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+	
+	return result_4;
+}
+
+int delete_key(int key){
+	CLIENT *clnt;
+	enum clnt_stat retval_5;
+	int result_5;
+	char *host;
+	host = ip();
+
+
+	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+	
+	retval_5 = d_delete_key_1(key, &result_5, clnt);
+	printf("delete realizado\n");
+	fflush(stdout);
+	if (retval_5 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+	return result_5;
+}
+
+int exist(int key){
+	CLIENT *clnt;
+	enum clnt_stat retval_6;
+	int result_6;
+	char *host;
+	host = ip();
+
+
+	clnt = clnt_create (host, KEY_VALUE_SERVICE, KEY_VALUE_SERVICE_VERSION, "tcp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+	
+	retval_6 = d_exist_1(key, &result_6, clnt);
+	printf("exist realizado\n");
+	fflush(stdout);
+	if (retval_6 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	printf("resultado: %d", result_6);
+	return result_6;
 }

@@ -32,7 +32,7 @@ d_set_value_1(int arg1, char *arg2, int arg3, double_array arg4, int *clnt_res, 
 }
 
 enum clnt_stat 
-d_get_value_1(int arg1, KeyValue *clnt_res,  CLIENT *clnt)
+d_get_value_1(int arg1, struct KeyValue *clnt_res,  CLIENT *clnt)
 {
 	return (clnt_call(clnt, d_get_value,
 		(xdrproc_t) xdr_int, (caddr_t) &arg1,

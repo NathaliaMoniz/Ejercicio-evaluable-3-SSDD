@@ -65,7 +65,7 @@ key_value_service_1(struct svc_req *rqstp, register SVCXPRT *transp)
 	union {
 		int d_init_1_res;
 		int d_set_value_1_res;
-		KeyValue d_get_value_1_res;
+		struct KeyValue d_get_value_1_res;
 		int d_modify_value_1_res;
 		int d_delete_key_1_res;
 		int d_exist_1_res;
