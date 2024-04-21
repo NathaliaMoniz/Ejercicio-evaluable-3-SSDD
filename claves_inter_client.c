@@ -44,34 +44,24 @@ key_value_service_1(char *host)
 #endif	/* DEBUG */
 
 	retval_1 = d_init_1(&result_1, clnt);
-	printf("eoeoeoe\n");
+	printf("iniciado\n");
 	fflush(stdout);
 	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	printf("1\n");
-	fflush(stdout);
+
 	d_set_value_1_arg1 = 6;
-	printf("2\n");
-	fflush(stdout);
 	d_set_value_1_arg2 = "hola";
-	printf("3\n");
-	fflush(stdout);
 	d_set_value_1_arg3 = 2;
-	printf("4\n");
-	fflush(stdout);
-	d_set_value_1_arg4.double_array_len=2;
-	printf("5\n");
-	fflush(stdout);
+	d_set_value_1_arg4.double_array_len = 2;
+	d_set_value_1_arg4.double_array_val = malloc(d_set_value_1_arg4.double_array_len * sizeof(double));
 	for (int i = 0; i < d_set_value_1_arg3; i++){
-		d_set_value_1_arg4.double_array_val[i] = 1.4*i;
+		d_set_value_1_arg4.double_array_val[i] = 1.4*(3.2);
 	}
 	// d_set_value_1_arg4.double_array_val[0] = 3.10;
 	// printf("6\n");
 	// fflush(stdout);
 	// d_set_value_1_arg4.double_array_val[1] = 0.10;
-	printf("7\n");
-	fflush(stdout);
 
 	retval_2 = d_set_value_1(d_set_value_1_arg1, d_set_value_1_arg2, d_set_value_1_arg3, d_set_value_1_arg4, &result_2, clnt);
 	if (retval_2 != RPC_SUCCESS) {
@@ -83,35 +73,43 @@ key_value_service_1(char *host)
 	// 	clnt_perror (clnt, "call failed");
 	// }
 
-	printf("1\n");
-	fflush(stdout);
 	d_modify_value_1_arg1 = 6;
-	printf("2\n");
-	fflush(stdout);
 	d_modify_value_1_arg2 = "valor cambiado";
-	printf("3\n");
-	fflush(stdout);
 	d_modify_value_1_arg3 = 1;
-	printf("4\n");
-	fflush(stdout);
 	d_modify_value_1_arg4.double_array_len = 2;
-	printf("5\n");
-	fflush(stdout);
+	d_modify_value_1_arg4.double_array_val = malloc(d_modify_value_1_arg4.double_array_len * sizeof(double));
 	d_modify_value_1_arg4.double_array_val[0] = 6.9;
-	printf("6\n");
-	fflush(stdout);
-	// retval_4 = d_modify_value_1(d_modify_value_1_arg1, d_modify_value_1_arg2, d_modify_value_1_arg3, d_modify_value_1_arg4, &result_4, clnt);
-	// if (retval_4 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	// }
-	// retval_5 = d_delete_key_1(d_delete_key_1_arg1, &result_5, clnt);
-	// if (retval_5 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	// }
-	// retval_6 = d_exist_1(d_exist_1_arg1, &result_6, clnt);
-	// if (retval_6 != RPC_SUCCESS) {
-	// 	clnt_perror (clnt, "call failed");
-	//}
+	retval_4 = d_modify_value_1(d_modify_value_1_arg1, d_modify_value_1_arg2, d_modify_value_1_arg3, d_modify_value_1_arg4, &result_4, clnt);
+	if (retval_4 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	d_delete_key_1_arg1 = 6;
+	retval_5 = d_delete_key_1(d_delete_key_1_arg1, &result_5, clnt);
+	if (retval_5 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	d_set_value_1_arg1 = 8;
+	d_set_value_1_arg2 = "hehe";
+	d_set_value_1_arg3 = 2;
+	d_set_value_1_arg4.double_array_len = 2;
+	d_set_value_1_arg4.double_array_val = malloc(d_set_value_1_arg4.double_array_len * sizeof(double));
+
+	for (int i = 0; i < d_set_value_1_arg3; i++){
+		d_set_value_1_arg4.double_array_val[i] = 1.4*(i*3.2);
+	}
+
+	retval_2 = d_set_value_1(d_set_value_1_arg1, d_set_value_1_arg2, d_set_value_1_arg3, d_set_value_1_arg4, &result_2, clnt);
+	if (retval_2 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	d_exist_1_arg1 = 6;
+	retval_6 = d_exist_1(d_exist_1_arg1, &result_6, clnt);
+	if (retval_6 != RPC_SUCCESS) {
+		clnt_perror (clnt, "call failed");
+	}
 #ifndef	DEBUG
 	clnt_destroy (clnt);
 #endif	 /* DEBUG */

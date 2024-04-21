@@ -74,10 +74,9 @@ d_delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
 
-	/*
-	 * insert server code here
-	 */
-
+	retval = TRUE;
+	*result = delete(&my_list, arg1);
+	printList(my_list);
 	return retval;
 }
 
@@ -86,9 +85,8 @@ d_exist_1_svc(int arg1, int *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
 
-	/*
-	 * insert server code here
-	 */
+	retval = TRUE;
+	*result = inlist(&my_list, arg1);
 
 	return retval;
 }

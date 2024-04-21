@@ -155,6 +155,8 @@ int delete(List *l, int key){
 
 	// Primer elemento de la lista
 	if ((*l)->key == key){
+		printf("Valor a borrar %d encontrado\n", key);
+		fflush(stdout);
 		aux = *l;
 		*l = (*l)->next;
 		free(aux->V_value2);
@@ -165,12 +167,14 @@ int delete(List *l, int key){
 	
 	aux = *l;
 	back = *l;
+	
 	// Recorre la lista en busca del valor
 	while (aux!=NULL) {
 		if (aux->key == key) {
 			back->next = aux->next;
 			free (aux);
 			printf("Valor a borrar %d encontrado\n", key);
+			fflush(stdout);
 			pthread_mutex_unlock(&mutex_lista1);  // Desbloquea el mutex antes de salir
 			return 0;		// Valor encontrado
 		}
